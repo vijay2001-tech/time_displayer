@@ -1,7 +1,7 @@
 name: Test build and deploy workflow
 on: push
 jobs:
-  build_job:
+  build_and_test_job:
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
@@ -13,14 +13,10 @@ jobs:
           java-version: '21'
       - name: Build with Maven
         run: mvn clean install
-  test_job:
-    needs: build_job
-    runs-on: ubuntu-latest
-    steps:
       - name: Test
         run: mvn test
   deploy_job:
-    needs: test_job
+    needs: build_and_test_job
     runs-on: ubuntu-latest
     steps:
       - name: Deploying
