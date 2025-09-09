@@ -1,0 +1,10 @@
+name: Output issues workflow
+on:
+  issues:
+    types: [opened, edited, closed]
+jobs:
+  issue_info_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output issue trigger
+        run: echo "${{ toJson(github) }}"
