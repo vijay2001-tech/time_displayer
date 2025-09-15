@@ -1,7 +1,7 @@
 name: Test build and deploy workflow
 on: push
 jobs:
-  build_and_test_job:
+  build_job:
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
@@ -15,7 +15,7 @@ jobs:
         run: mvn clean install
 
   test_job:
-    needs: build_and_test_job
+    needs: build_job
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
@@ -31,7 +31,7 @@ jobs:
         run: mvn test
 
   deploy_job:
-    needs: build_and_test_job
+    needs: test_job
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
