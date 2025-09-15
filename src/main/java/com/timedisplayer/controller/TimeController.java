@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/greet-time")
+@RequestMapping("/greet-times")
 public class TimeController {
     @Autowired
     private TimeService timeService;
