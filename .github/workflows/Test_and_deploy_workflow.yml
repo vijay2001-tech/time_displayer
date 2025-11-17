@@ -19,8 +19,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-         name: target-files
-         path: bin/
+         name: target-files-uploaded
+         path: target/
 
   test_job:
     needs: build_job
