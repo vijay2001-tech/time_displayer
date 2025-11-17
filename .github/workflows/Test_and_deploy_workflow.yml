@@ -49,6 +49,8 @@ jobs:
           java-version: '21'
       - name: Get Artifcat
         run: actions/download-artifcat@v3
+        with:
+          name: target-file-uploaded
       - name: Output
         run: ls  
       - name: Deploying (placeholder)
