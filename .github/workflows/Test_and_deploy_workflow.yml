@@ -48,7 +48,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - name: Get Artifcat
-        uses: actions/download-artifcat@v4
+        uses: actions/download-artifact@v4
         with:
           name: target-file-uploaded
       - name: Output
