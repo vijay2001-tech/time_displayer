@@ -47,7 +47,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - name: Build artifact
-        run: mvn -q package
+      - name: Get Artifcat
+        run: actions/download-artifcat@v3
+      - name: Output
+        run: ls  
       - name: Deploying (placeholder)
         run: echo "Deploying..."
