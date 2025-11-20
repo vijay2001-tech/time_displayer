@@ -13,6 +13,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - name: Caching the dependencies 
+        with:
+         cache: 'maven'
+         cache-dependency-path: 'TimeDisplayer/pom.xml'
           
       - name: Build with Maven
         run: mvn clean install
@@ -26,6 +30,20 @@ jobs:
         with:
          name: target-files-uploaded
          path: target/
+         
+  test_job:
+    needs: build_job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code from repository
+        uses: actions/checkout@v3
+      - name: Set up Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Run tests with Maven
+        run: mvn test
 
   deploy_job:
     needs: build_job
@@ -41,8 +59,7 @@ jobs:
       - name: Get Artifcat
         uses: actions/download-artifact@v4     
         with:
-          name: target-files-uploaded
-          
+          name: target-files-uploaded          
       - name: Output
         run: ls  
         
