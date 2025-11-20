@@ -3,10 +3,11 @@ on: push
 jobs:
   build_job:
     runs-on: ubuntu-latest
+    outputs:
+      jar-file: ${{ steps.jar.outputs.jar-file }}
     steps:
       - name: Get code from repository
-        uses: actions/checkout@v3
-        
+        uses: actions/checkout@v3        
       - name: Set up Java JDK
         uses: actions/setup-java@v3
         with:
@@ -16,28 +17,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         
+      - name: Get jar filename
+        id: jar
+        run: find target/*.jar -type f -execdir echo '::set-output name=jar-file::{}' ';'
+        
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
          name: target-files-uploaded
          path: target/
 
-  test_job:
-    needs: build_job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code from repository
-        uses: actions/checkout@v3
-      - name: Set up Java JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-      - name: Run tests with Maven
-        run: mvn test
-
   deploy_job:
-    needs: test_job
+    needs: build_job
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
