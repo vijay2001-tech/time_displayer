@@ -1,28 +1,27 @@
 name: Test and Deploy
 on: push
-branches :
-      - dev
+branches:
+- Dev
 jobs:
-  test_job:
-     runs-on: ubuntu-latest
-     env:
-       TD_SERVER_PORT: 8044
-       TD_DB_URL: qa_db_url
-       TD_DB_USERNAME: qa_db_username
-       TD_DB_PASSWORD: qa_db_password
-     steps:
-        - name: Get code
-          uses: actions/checkout@v3
-        - name: Set up JDK
-          uses: actions/setup-java@v3
-          with:
-            distribution: 'temurin'
+   test_job:
+      runs-on: ubuntu-latest
+      env:
+         TD_SERVER_PORT: 8044
+         TD_DB_URL: qa_db_url
+         TD_DB_USERNAME: qa_db_username
+         TD_DB_PASSWORD: qa_db_password
+      steps:
+      -  name: Get code
+         uses: actions/checkout@v3
+      -  name: Set up JDK
+         uses: actions/setup-java@v3
+         with:
+            distribution: temurin
             java-version: '21'
-        - name: Caching the maven dependecies
-          uses: actions/cache@v3
-          with:
+      -  name: Caching the maven dependecies
+         uses: actions/cache@v3
+         with:
             path: ~/.m2/repository
-            key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}   
-        - name: Install and Build Maven
-          run: mvn clean install
-        
+            key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
+      -  name: Install and Build Maven
+         run: mvn clean install
