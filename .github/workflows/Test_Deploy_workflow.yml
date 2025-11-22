@@ -32,4 +32,4 @@ jobs:
           echo "Waiting for app to start..."
           sleep 20   # adjust depending on startup time
 
-          curl --fail http://localhost:8044/greet-times/customer-db-details
+          curl --fail http://localhost:${env.TD_SERVER_PORT}/greet-times/customer-db-details
