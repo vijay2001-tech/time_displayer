@@ -28,6 +28,8 @@ jobs:
          run: mvn clean install
       -  name: Start Spring App
          run: |
-           nohup java -jar target/*.jar
-           echo "Waiting for app to start"
-           curl --fail http://localhost:8044//greet-times/customer-db-details
+          nohup java -jar target/*.jar > app.log 2>&1 &
+          echo "Waiting for app to start..."
+          sleep 20   # adjust depending on startup time
+
+          curl --fail http://localhost:8044//greet-times/customer-db-details
