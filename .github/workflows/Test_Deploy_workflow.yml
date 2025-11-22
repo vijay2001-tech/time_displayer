@@ -44,7 +44,7 @@ jobs:
       needs: test_job
       runs-on: ubuntu-latest
       env:
-         TD_SERVER_PORT: 8045
+         TD_SERVER_PORT: ${{PROD_TD_SERVER_PORT}}
          TD_DB_URL: prod_db_url
          TD_DB_USERNAME: ${{ secrets.PROD_TD_DB_USERNAME}}
          TD_DB_PASSWORD: ${{ secrets.PROD_TD_DB_PASSWORD}}
