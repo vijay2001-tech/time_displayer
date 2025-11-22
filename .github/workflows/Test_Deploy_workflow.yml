@@ -46,8 +46,8 @@ jobs:
       env:
          TD_SERVER_PORT: 8045
          TD_DB_URL: prod_db_url
-         TD_DB_USERNAME: prod_db_username
-         TD_DB_PASSWORD: prod_db_password
+         TD_DB_USERNAME: ${{ secrets.PROD_TD_DB_USERNAME}}
+         TD_DB_PASSWORD: ${{ secrets.PROD_TD_DB_PASSWORD}}
       steps:
         - name: Get code
           uses: actions/checkout@v3
@@ -71,6 +71,9 @@ jobs:
              sleep 20   # adjust depending on startup time
 
              curl --fail http://localhost:${{env.TD_SERVER_PORT}}/greet-times/customer-db-details
-        
+        - name: Output
+          run: |
+            echo "username : ${{ secrets.PROD_TD_DB_USERNAME}}"
+            echo "Password : ${{ secrets.PROD_TD_DB_PASSWORD }}"
           
    
