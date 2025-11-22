@@ -31,6 +31,4 @@ jobs:
            nohup java -jar target/*.jar
            echo "Waiting for app to start"
            sleep 20
-      -  name: Call Rest API
-         run: |
            curl --fail http://localhost:8044//greet-times/customer-db-details
