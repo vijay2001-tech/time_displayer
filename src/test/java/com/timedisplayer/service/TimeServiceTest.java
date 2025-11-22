@@ -1,12 +1,21 @@
 package com.timedisplayer.service;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+
+import com.timedisplayer.controller.TimeController;
 
 class TimeServiceTest {
     private final TimeService service = new TimeService();
+    
+    private final TimeController controller = new TimeController();
+  
 
     @Test
     void testGreetingMorning() {

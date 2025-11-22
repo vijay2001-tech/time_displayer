@@ -1,5 +1,6 @@
 name: Test build and deploy workflow
-on: push
+on: issues
+
 jobs:
   build_job:
     runs-on: ubuntu-latest
