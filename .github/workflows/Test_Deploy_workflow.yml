@@ -26,3 +26,11 @@ jobs:
             key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
       -  name: Install and Build Maven
          run: mvn clean install
+      -  name: Start Spring App
+         run: |
+           nohup java -jar target/*.jar
+           echo "Waiting for app to start"
+           sleep 20
+      -  name: Call Rest API
+         run: |
+           curl --fail http://localhost:8044//greet-times/customer-db-details
