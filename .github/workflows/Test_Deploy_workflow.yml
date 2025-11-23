@@ -25,10 +25,15 @@ jobs:
          with:
             path: ~/.m2/repository
             key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
-      -  name: Install and Build Maven
+      -  name: Install , Build Maven and test
+         id: build-test
          run: mvn clean install
-      -  name: Test testcases
-         run: mvn test
+      -  name: Upload Test Report
+         if: failure() && steps.build-test.outcome = 'failure'
+         uses: actions/upload-artifact@v3
+         with:
+           name: Test Report
+           path: src/test/java/*.txt
       -  name: Start Spring App
          run: |
             nohup java -jar target/*.jar > app.log 2>&1 &
