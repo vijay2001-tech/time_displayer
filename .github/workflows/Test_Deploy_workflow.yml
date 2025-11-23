@@ -27,6 +27,8 @@ jobs:
             key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
       -  name: Install and Build Maven
          run: mvn clean install
+      -  name: Test testcases
+         run: mvn test
       -  name: Start Spring App
          run: |
             nohup java -jar target/*.jar > app.log 2>&1 &

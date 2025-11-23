@@ -1,0 +1,11 @@
+Test Report 
+
+Test Suite: TimeDisplayer Application
+
+
+Test Case 1: Display Current Time
+Description: Verify that the application displays the current time correctly.
+
+Status: Passed
+Test Case 2: Time Format
+Description: Verify that the time is displayed in the correct format (HH:MM:SS).
