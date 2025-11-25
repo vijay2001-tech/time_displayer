@@ -22,10 +22,12 @@ jobs:
             java-version: '21'
       -  name: Caching the maven dependecies
          uses: actions/cache@v3
+         id: cache
          with:
             path: ~/.m2/repository
             key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
       -  name: Install , Build Maven and test
+         if: steps.cache.outputs.cache-hit != 'true'
          id: build-test
          run: mvn clean install
       -  name: Upload Test Report
