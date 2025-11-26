@@ -5,7 +5,10 @@ on:
         Dev
 jobs: 
    build:
-      runs-on: ubuntu-latest
+      strategry: 
+         matrix:
+            operating-system: [ubuntu-latest, windows-latest]
+      runs-on:  ${{strategy.matrix.operating-system}}
       steps: 
        -  name: Get code
           uses: actions/checkout@v3
