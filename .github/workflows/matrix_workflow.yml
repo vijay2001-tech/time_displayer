@@ -5,9 +5,9 @@ on:
         Dev
 jobs: 
    build:
-    continue-on-error: true 
-    strategy: 
-      matrix:
+      continue-on-error: true 
+      strategy: 
+       matrix:
          operating-system: [ubuntu-latestssd, windows-latest]
       runs-on:  ${{matrix.operating-system}}
       steps: 
