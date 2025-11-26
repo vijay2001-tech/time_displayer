@@ -1,0 +1,17 @@
+name: Matrix Demo
+on: 
+  push:
+     branch:
+        Dev
+jobs: 
+   build:
+      runs-on: ubuntu-latest
+      steps: 
+       -  name: Get code
+          uses: actions/checkout@v3
+       -  name: setup JDK
+          uses: actions/setup-java@v3
+          with:
+            distribution: temurin
+            java-version: '21'
+       

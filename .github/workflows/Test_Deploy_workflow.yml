@@ -1,8 +1,5 @@
 name: Test and Deploy
-on:
-   push:
-      branches:
-      - Dev
+on: issues
 jobs:
    test_job:
       runs-on: ubuntu-latest
