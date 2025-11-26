@@ -8,7 +8,7 @@ jobs:
       strategy: 
          matrix:
             operating-system: [ubuntu-latest, windows-latest]
-      runs-on:  ${{strategy.matrix.operating-system}}
+      runs-on:  ${{matrix.operating-system}}
       steps: 
        -  name: Get code
           uses: actions/checkout@v3
