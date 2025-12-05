@@ -1,7 +1,7 @@
 name: Deploy txt on GCP VM
 
 on:
- workflow_dispatch:
+ push:
      branch: 
         Dev
 
