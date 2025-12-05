@@ -32,7 +32,7 @@ jobs:
        - name: Test File deployment
          run: |
             echo "Hello from Github actions!" > testfile.txt
-            scp -o StrictHostKeyChecking=no -i ssh_key testfile.txt ${{ secrets.GCP_USER}}@${{secrets.GCE_HOST }}::/tmp/testfile.txt
-            ssh -o StrictHostKeyChecking=no -i  ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "ls -l /tmp/testfile.txt && cat /tmp/testfile.txt"
+            scp -o StrictHostKeyChecking=no -i ssh_key testfile.txt ${{ secrets.GCP_USER}}@${{secrets.GCE_HOST }}:/tmp/testfile.txt
+            ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "ls -l /tmp/testfile.txt && cat /tmp/testfile.txt"
            
            
