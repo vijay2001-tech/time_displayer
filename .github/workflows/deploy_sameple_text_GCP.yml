@@ -1,6 +1,6 @@
 name: Deploy txt on GCP VM
 
-on: worflow_dispatch
+on: workflow_dispatch
 
 jobs:
   deploy:

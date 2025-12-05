@@ -1,6 +1,6 @@
 name: Matrix Demo
 on: 
-  push:
+  issues:
      branch:
         Dev
 jobs: 
