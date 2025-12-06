@@ -28,7 +28,7 @@ class TimeServiceTest {
     void testGreetingAfternoon() {
         LocalTime afternoon = LocalTime.of(13, 0);
         String greeting = getGreetingForHour(afternoon.getHour());
-        assertEquals("Good afternoons", greeting);
+        assertEquals("Good afternoon", greeting);
     }
 
     @Test
