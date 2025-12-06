@@ -17,33 +17,33 @@ public class TimeController {
     @Autowired
     private TimeService timeService;
     
-    @Value("${customer.db.url}")
-    private String customerDbUrl;
+//    @Value("${customer.db.url}")
+//    private String customerDbUrl;
+//    
+//    @Value("${customer.db.username}")
+//    private String customerDbUser;
+//    
+//    @Value("${customer.db.password}")
+//    private String customerDbPassword;
     
-    @Value("${customer.db.username}")
-    private String customerDbUser;
-    
-    @Value("${customer.db.password}")
-    private String customerDbPassword;
-    
-    //added comment
-    @GetMapping("/customer-db-details")
-    public Map<String,String> getCustomerDbDetails() {
-    	
-    	 System.out.println("Customer DB URL: " + customerDbUrl);
-    	    System.out.println("Customer DB User: " + customerDbUser);
-    	    System.out.println("Customer DB Password: " + customerDbPassword);
-    	    
-    	    Map<String, String> dbDetails = new HashMap<>();
-    	    dbDetails.put("customerDbUrl", customerDbUrl);
-    	    dbDetails.put("customerDbUser", customerDbUser);
-    	    dbDetails.put("customerDbPassword", customerDbPassword);
-    	    	
-    	    	return dbDetails;
-    	
-    }
-    
-   
+//    //added comment
+//    @GetMapping("/customer-db-details")
+//    public Map<String,String> getCustomerDbDetails() {
+//    	
+//    	 System.out.println("Customer DB URL: " + customerDbUrl);
+//    	    System.out.println("Customer DB User: " + customerDbUser);
+//    	    System.out.println("Customer DB Password: " + customerDbPassword);
+//    	    
+//    	    Map<String, String> dbDetails = new HashMap<>();
+//    	    dbDetails.put("customerDbUrl", customerDbUrl);
+//    	    dbDetails.put("customerDbUser", customerDbUser);
+//    	    dbDetails.put("customerDbPassword", customerDbPassword);
+//    	    	
+//    	    	return dbDetails;
+//    	
+//    }
+//    
+//   
 
     @GetMapping
     public Map<String, String> getGreetingWithTime() {

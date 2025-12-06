@@ -42,7 +42,9 @@ jobs:
             echo "Deployment Done"
             
         - name: Restart Application on VM
-          run: | 
-             ssh -o StrictHostKeyChecking=no -i ssh_key ${{secrets.GCE_USER}}@${{secrets.GCE_HOST}} << 'EOF'
-             pkill -f "TimeDisplayer-0.0.1-SNAPSHOT.jar" || true
-             nohup java -jar /home/${{secrets.GCE_USER }}/TimeDisplayerApp/*.jar > TimeDisplayer.log 2>&1 &EOF
+          run: |
+           ssh -o StrictHostKeyChecking=no -i ssh_key \
+           ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} << 'EOF'
+           pkill -f "TimeDisplayer-0.0.1-SNAPSHOT.jar" || true
+           nohup java -jar /home/${{ secrets.GCE_USER }}/TimeDisplayerApp/*.jar > TimeDisplayer.log 2>&1 &
+          EOF
