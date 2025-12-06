@@ -27,7 +27,7 @@ jobs:
            
        - name: Test SSH Connection
          run: | 
-           ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "echo 'SSH SUCCESSFULLY CONNECTED TO VM'"
+           ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCP_SSH_USER}}@${{ secrets.GCE_HOST }} "echo 'SSH SUCCESSFULLY CONNECTED TO VM'"
        
        - name: Test File deployment
          run: |
