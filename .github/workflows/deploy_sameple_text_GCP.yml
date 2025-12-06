@@ -3,7 +3,7 @@ name: Deploy txt on GCP VM
 on:
  push:
      branch: 
-        Dev
+        Main
 
 jobs:
   deploy:
