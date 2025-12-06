@@ -1,9 +1,6 @@
 name: Deploy txt on GCP VM
 
-on:
- push:
-     branch: 
-        Main
+on: issues
 
 jobs:
   deploy:
