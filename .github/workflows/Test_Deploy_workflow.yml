@@ -1,0 +1,89 @@
+name: Test and Deploy
+on: issues
+jobs:
+   test_job:
+      runs-on: ubuntu-latest
+      environment: QA
+      env:
+         TD_SERVER_PORT: ${{secrets.QA_TD_SERVER_PORT}}
+         TD_DB_URL: qa_db_url
+         TD_DB_USERNAME: qa_db_username
+         TD_DB_PASSWORD: qa_db_password
+      steps:
+      -  name: Get code
+         uses: actions/checkout@v3
+      -  name: Set up JDK
+         uses: actions/setup-java@v3
+         with:
+            distribution: temurin
+            java-version: '21'
+      -  name: Caching the maven dependecies
+         uses: actions/cache@v3
+         id: cache
+         with:
+            path: ~/.m2/repository
+            key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
+      -  name: Install , Build Maven and test
+         if: steps.cache.outputs.cache-hit != 'true'
+         id: build-test
+         run: mvn clean install
+      -  name: Upload Test Report
+         if: failure() && steps.build-test.outcome == 'failure'
+         uses: actions/upload-artifact@v4
+         with:
+           name: Test Report
+           path: src/test/java/*.txt
+      -  name: Start Spring App
+         run: |
+            nohup java -jar target/*.jar > app.log 2>&1 &
+            echo "Waiting for app to start..."
+            sleep 20   # adjust depending on startup time # adjust depending on startup time
+
+
+            curl --fail http://localhost:${{env.TD_SERVER_PORT}}/greet-times/customer-db-details
+      -  name: Upload app log
+         uses: actions/upload-artifact@v4
+         with:
+            name: spring-app-log
+
+
+            path: app.log
+   deploy_job:
+      needs: test_job
+      runs-on: ubuntu-latest
+      environment: Prod
+      env:
+         TD_SERVER_PORT: ${{ secrets.PROD_TD_SERVER_PORT}}
+         TD_DB_URL: prod_db_url
+         TD_DB_USERNAME: ${{ secrets.PROD_TD_DB_USERNAME}}
+         TD_DB_PASSWORD: ${{ secrets.PROD_TD_DB_PASSWORD}}
+      steps:
+      -  name: Get code
+         uses: actions/checkout@v3
+      -  name: setup JDK
+         uses: actions/setup-java@v3
+         with:
+            distribution: temurin
+            java-version: '21'
+      -  name: Caching the maven dependecies
+         uses: actions/cache@v3
+         with:
+            path: ~/.m2/repository
+            key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
+      -  name: Install and Build Maven
+
+         run: mvn clean install
+      -  name: Start Spring App
+         run: |
+            nohup java -jar target/*.jar > app.log 2>&1 &
+            echo "Waiting for app to start..."
+
+            sleep 20   # adjust depending on startup time
+
+            curl --fail http://localhost:${{env.TD_SERVER_PORT}}/greet-times/customer-db-details
+      -  name: Output # adjust depending on startup time
+         run: |
+
+
+            echo "username : ${{ secrets.PROD_TD_DB_USERNAME}}"
+            echo "Password : ${{ secrets.PROD_TD_DB_PASSWORD }}"

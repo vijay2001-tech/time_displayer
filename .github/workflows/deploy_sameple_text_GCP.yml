@@ -1,0 +1,35 @@
+name: Deploy txt on GCP VM
+
+on: issues
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    
+    steps:
+       - name: Checkout code
+         uses: actions/checkout@v3
+         
+       - name: Set up google cloud SDK 
+         uses: google-github-actions/setup-gcloud@v1
+         with: 
+            service_account_key: ${{ secrets.GCP_SERVICE_KEY}}
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            
+       - name: Authorize SSH KEy
+         run: |
+           echo "${{ secrets.SSH_PRIVATE_KEY}}" > ssh_key
+           chmod 600 ssh_key
+           
+       - name: Test SSH Connection 
+         run: | 
+           ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "echo 'SSH SUCCESSFULLY CONNECTED TO VM'"
+       
+       - name: Test File deployment
+         run: |
+            echo "Hello from Github actions!" > testfile.txt
+            scp -o StrictHostKeyChecking=no -i ssh_key testfile.txt ${{ secrets.GCE_USER}}@${{secrets.GCE_HOST }}:/home/udpvijay3456/test/
+            ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "ls -l /home/udpvijay3456/test/testfile.txt && cat /home/udpvijay3456/test/testfile.txt"
+           
+           

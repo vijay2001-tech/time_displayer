@@ -1,19 +1,40 @@
 name: Test build and deploy workflow
-on: push
+on: issues
+
 jobs:
   build_job:
     runs-on: ubuntu-latest
+    outputs:
+      jar-file: ${{ steps.jar.outputs.jar-file }}
     steps:
       - name: Get code from repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3        
       - name: Set up Java JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'maven'
+          
+      - name: Caching the maven dependencies
+        uses: actions/cache@v3 
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
+          
       - name: Build with Maven
         run: mvn clean install
-
+        
+      - name: Get jar filename
+        id: jar
+        run: find target/*.jar -type f -execdir echo '::set-output name=jar-file::{}' ';'
+        
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+         name: target-files-uploaded
+         path: target/
+         
   test_job:
     needs: build_job
     runs-on: ubuntu-latest
@@ -25,13 +46,18 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
+      - name: Caching the maven dependencies
+        uses: actions/cache@v3 
+        with:
+          path: ~/.m2/repository
+          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml')}}
       - name: Build with Maven
         run: mvn clean install
-      - name: Test
+      - name: Run tests with Maven
         run: mvn test
 
   deploy_job:
-    needs: test_job
+    needs: build_job
     runs-on: ubuntu-latest
     steps:
       - name: Get code from repository
@@ -41,9 +67,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - name: Build with Maven
-        run: mvn clean install
-      - name: Test
-        run: mvn test
-      - name: Deploying
+      - name: Get Artifcat
+        uses: actions/download-artifact@v4     
+        with:
+          name: target-files-uploaded          
+      - name: Output
+        run: ls  
+        
+      - name: Output of jar-filename
+        run: echo "${{needs.build_job.outputs.jar-file}}"
+      - name: Deploying (placeholder)
         run: echo "Deploying..."
