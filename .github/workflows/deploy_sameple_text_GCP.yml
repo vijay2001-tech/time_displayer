@@ -25,7 +25,7 @@ jobs:
            echo "${{ secrets.SSH_PRIVATE_KEY}}" > ssh_key
            chmod 600 ssh_key
            
-       - name: Test SSH Connection
+       - name: Test SSH Connection 
          run: | 
            ssh -o StrictHostKeyChecking=no -i ssh_key ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST }} "echo 'SSH SUCCESSFULLY CONNECTED TO VM'"
        
