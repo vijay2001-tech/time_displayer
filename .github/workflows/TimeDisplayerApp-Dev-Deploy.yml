@@ -1,0 +1,48 @@
+name: Deploy TimeDisplayerApp
+
+on: 
+   push:
+     branches: 
+          Dev
+          
+jobs:
+  build-test-deploy:
+     runs-on: ubuntu-latest
+     
+     steps:
+      
+        - name: checkout code
+          uses: actions/checkout@v3
+       
+        - name: Set up Jdk 21
+          uses: action/setup-java@v3
+          with:
+            distribution: temurin
+            java-version: "21"
+            
+         
+        - name: Build and Test the application
+          run: mvn clean package -DskipTests=false
+          
+        - name: Authenticate with GCP
+          uses: google-github-actions/auth@v1
+          with:
+            service_account_key: ${{ secrets.GCP_SERVICE_KEY}}
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+            
+        - name: Import SSH key from Github Secrets 
+          run: |
+            echo  "${{ secrets.SSH_PRIVATE_KEY}}" > ssh_key
+            chmod 600 ssh_key
+            
+        - name: Deploy JAR to VM
+          run: | 
+            scp -o StrictHostKeyChecking=no -i ssh_key target/*.jar \
+            ${{ secrets.GCE_USER }}@${{ secrets.GCE_HOST}}:/home/${{secrets.GCE_USER }}/TimeDisplayerApp/
+            echo "Deployment Done"
+            
+        - name: Restart Application on VM
+          run: | 
+             ssh -o StrictHostKeyChecking=no -i ssh_key ${{secrets.GCE_USER}}@${{secrets.GCE_HOST}} << 'EOF'
+             pkill -f "TimeDisplayer-0.0.1-SNAPSHOT.jar" || true
+             nohup java -jar /home/${{secrets.GCE_USER }}/TimeDisplayerApp/*.jar > TimeDisplayer.log 2>&1 &EOF
